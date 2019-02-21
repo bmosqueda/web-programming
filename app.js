@@ -1,23 +1,14 @@
-function greet() {
-  console.log('Hi');
-} 
-
+var greet = require('./greet.js');
 greet();
 
-function logGreeting(fn) {
-  fn();
-}
+var person = {
+  firstname: "Brandon",
+  lastname: "Mosqueda",
+  greet: function() {
+    console.log("Hello, " + this.firstname + " " + this.lastname);
+  }
+};
 
-logGreeting(greet);
+person.greet();
 
-var greetMe = function() {
-  console.log('Hi Tony!');
-}   
-
-greetMe();
-
-logGreeting(greetMe);
-
-logGreeting(function() {
-  console.log("Hi tony! 2.0");
-});
+console.log(person['firstname']);
