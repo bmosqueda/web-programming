@@ -1,0 +1,22 @@
+Importancia de conocer la tecnología más adecuada para cada tipo de proyecto es importante.
+El sistema operativo en donde se monta una aplicación también juega un papel importante cuando se habla de rendimiento de las aplicaciones. Cuando se ejecuta nuestro programa el control pasa al kernel, estas operaciones generalmente producen un bloqueo en el sistema operativo, lo que quiere decir que se tiene que esperar a que el kernel termine la tarea para regresar el control a la aplicación.
+Las llamadas al sistema operativo generalmente son de bloqueo.
+
+
+I/O Basics: A Quick Refresher:
+System calls:
+Blocking vs. Non-blocking Calls:
+
+Scheduling:
+
+The “Keep It Simple” Approach: PHP:
+The Multithreaded Approach: Java:
+
+by starting a new thread of execution for each request that comes in and then in this thread eventually calling the function that you wrote.
+to one request and is run in its own thread, instead of a separate process for each request which requires its own memory, we have a separate thread. 
+
+. between threads because they can access each other’s memory, but the impact on how it interacts with the schedule it still almost identical to what is being done in the PHP example previously.
+It has already a non-blocking I/O
+Non-blocking I/O as a First Class Citizen: Node:
+Naturally Non-blocking: Go:
+Lies, Damned Lies and Benchmarks:
