@@ -1,7 +1,19 @@
-function Person(firstname, lastname) {
-  this.firstname = firstname;
-  this.lastname = lastname;
+//Pass values as value
+function change(b) {
+  b = 2;
 }
 
-var brandon = new Person("Brandon", "Mosqueda");
-console.table(brandon);
+var a = 1;
+change(a);
+console.log(a);
+
+//Pass value as reference
+function changeObj(d) {
+  d.prop1 = function () {};
+  d.prop2 = {};
+}
+
+var c = {};
+c.prop1 = {};
+changeObj(c);
+console.log(c);
