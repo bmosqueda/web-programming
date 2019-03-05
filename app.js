@@ -1,19 +1,9 @@
-//Pass values as value
-function change(b) {
-  b = 2;
-}
+var firstname = 'Brandon';
 
-var a = 1;
-change(a);
-console.log(a);
+(function(lastname) {
+  var firstname = 'Alejandro';
+  console.log(firstname);
+  console.log(lastname);
+})('Mosqueda');
 
-//Pass value as reference
-function changeObj(d) {
-  d.prop1 = function () {};
-  d.prop2 = {};
-}
-
-var c = {};
-c.prop1 = {};
-changeObj(c);
-console.log(c);
+console.log(firstname);
