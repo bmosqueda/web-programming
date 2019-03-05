@@ -1,5 +1,6 @@
-var greet = function() {
-  console.log("Hello from greet!");
+/*
+  First pattern, override module exports object to a function
+ */
+module.exports = function() {
+  console.log("Hello worl from greet!");
 };
-
-module.exports = greet;
