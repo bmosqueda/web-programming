@@ -7,5 +7,6 @@ function Greeter() {
   this.greet = function greet() {
     console.log(this.greeting);
   }; 
-}
+};
+
 module.exports = new Greeter();
