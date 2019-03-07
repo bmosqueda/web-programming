@@ -1,20 +1,27 @@
-var greet = require('./greet');
-greet();
+var obj = {
+  greet: 'Hello'
+};
 
-var greet2 = require('./greet2').greet;
-greet2();
+console.log( obj.greet );
+console.log( obj[ 'greet' ] );
+var prop = 'greet';
+console.log( obj[ prop ] );
 
-var greet3 = require('./greet3');
-console.log(greet3);
-greet3.greet();
+//Functions and arrays
+var arr = [];
 
-var test = require('./test');
-test.hola()
+arr.push(function() {
+  console.log("Hello world 1" );
+});
 
-var Greet4 = require('./greet4');
-var child = new Greet4();
-child.greet();
+arr.push(function() {
+  console.log("Hello world 2");
+});
 
-var greet5 = require('./greet5');
-greet5.greet();
-console.log(greet5);
+arr.push(function() {
+  console.log("Hello world 3");
+});
+
+arr.forEach(function(item) {
+  item();
+});
