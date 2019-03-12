@@ -1,13 +1,16 @@
-module.exports = (function() {
-  var greeting = 'Hello world';
-  var name = 'Brandon';
+const person = {
+  firstname: 'Person',
+  greet() {
+    return 'Hola ' + this.firstname;
+  }
+};
 
-  function hola() {
-    console.log(greeting);
-  };
+const brandon = Object.create(person);
+brandon.firstname = 'Brandon';
 
-  return {
-    name,
-    hola
-  };
-})();
+person.firstname = 'Person EDIT';
+
+console.log(person.greet());
+console.log(brandon.greet());
+
+console.log(Object.getPrototypeOf(brandon));
