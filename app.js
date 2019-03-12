@@ -1,27 +1,13 @@
-var obj = {
-  greet: 'Hello'
-};
+var Emitter = require('./emitter');
 
-console.log( obj.greet );
-console.log( obj[ 'greet' ] );
-var prop = 'greet';
-console.log( obj[ prop ] );
+var emitter = new Emitter();
 
-//Functions and arrays
-var arr = [];
-
-arr.push(function() {
-  console.log("Hello world 1" );
+emitter.on('greet', function() {
+  console.log('Greet 1');
 });
 
-arr.push(function() {
-  console.log("Hello world 2");
+emitter.on('greet', function() {
+  console.log('Greet 2');
 });
 
-arr.push(function() {
-  console.log("Hello world 3");
-});
-
-arr.forEach(function(item) {
-  item();
-});
+emitter.emit('greet');
