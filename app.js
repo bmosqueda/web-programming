@@ -1,13 +1,15 @@
-var Emitter = require('./emitter');
+// var Emitter = require('./emitter');
+var Emitter = require('events');
+var eventsConfig = require('./config').events;
 
 var emitter = new Emitter();
 
-emitter.on('greet', function() {
+emitter.on(eventsConfig.GREET, function() {
   console.log('Greet 1');
 });
 
-emitter.on('greet', function() {
+emitter.on(eventsConfig.GREET, function() {
   console.log('Greet 2');
 });
 
-emitter.emit('greet');
+emitter.emit(eventsConfig.GREET);
