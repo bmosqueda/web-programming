@@ -1,4 +1,7 @@
+'use strict';
+
 var util = require('util');
+var Person = require('./person');
 
 function Policeman() {
   this.badgenumber = '1234';
