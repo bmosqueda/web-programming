@@ -1,16 +1,13 @@
-const person = {
-  firstname: 'Person',
-  greet() {
-    return 'Hola ' + this.firstname;
-  }
+var obj = {
+  name: 'Brandon Mosqueda',
+  greet: function() {
+    console.log(`Hello ${ this.name }`);
+  }       
 };
 
-const brandon = Object.create(person);
-brandon.firstname = 'Brandon';
-
-person.firstname = 'Person EDIT';
-
-console.log(person.greet());
-console.log(brandon.greet());
-
-console.log(Object.getPrototypeOf(brandon));
+obj.greet();
+/*
+  Invocando a las funciones con call podemos pasarle
+  el objeto this para que haga referencia a otro objeto
+ */
+obj.greet.call({ name: 'Alejandro González' });
