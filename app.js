@@ -1,16 +1,6 @@
-const GreeterProto = require('./models/greeter-proto.js');
-const GreeterClass = require('./models/greeter-class.js');
+const Person = require('./models/person-class');
+const Policeman = require('./models/policeman-proto');
 
-const greeterP = new GreeterProto('Brandon');
-const greeterC = new GreeterClass('Mosqueda');
+const police = new Policeman('Brandon', 'Mosqueda', 1698);
 
-greeterP.on('greet', function() {
-  console.log('GreeterProto emit: ', this.greeting);
-});
-
-greeterC.on('greet', function() {
-  console.log('GreeterClass emit: ', this.greeting);
-});
-
-greeterP.greet();
-greeterC.greet();
+police.greet();
