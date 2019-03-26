@@ -1,21 +1,16 @@
-var EventEmitter = require('events');
-var util = require('util');
+const GreeterProto = require('./models/greeter-proto.js');
+const GreeterClass = require('./models/greeter-class.js');
 
-function Greeter() {
-  this.greeting = 'Hello world!';
-}
+const greeterP = new GreeterProto('Brandon');
+const greeterC = new GreeterClass('Mosqueda');
 
-util.inherits(Greeter, EventEmitter);
-
-Greeter.prototype.greet = function() {
-  console.log(this.greeting);
-  this.emit('greet');
-} 
-
-var greeter = new Greeter();
-
-greeter.on('greet', function() {
-  console.log('Someone greeted!');
+greeterP.on('greet', function() {
+  console.log('GreeterProto emit: ', this.greeting);
 });
 
-greeter.greet();
+greeterC.on('greet', function() {
+  console.log('GreeterClass emit: ', this.greeting);
+});
+
+greeterP.greet();
+greeterC.greet();

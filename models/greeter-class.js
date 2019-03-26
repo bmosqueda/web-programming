@@ -11,10 +11,4 @@ class Greeter extends EventEmitter {
   }
 }
 
-var greeter = new Greeter('Hola mundo');
-
-greeter.on('greet', function() {
-  console.log('Someone greeted! ', this.greeting);
-});
-
-greeter.greet();
+module.exports = Greeter;
