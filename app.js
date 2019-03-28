@@ -1,7 +1,21 @@
-const Person = require('./models/person-class');
-const Policeman = require('./models/policeman-proto');
+/*
+  Callbacks basics
+ */
+function greet(callback) {
+  console.log('Hello!');
+  var data = {
+    name: 'Brandon Mosqueda'
+  };
 
-const person = new Person('Brandon', 'Mosqueda', 1698);
-const police = new Policeman('Alejandro', 'González');
+  callback(data);
+} 
 
-police.greet();
+greet(function(data) {
+  console.log('Callback function');
+  console.log(data);
+});
+
+greet(function(data) {
+  console.log('Another callback function');
+  console.log(data.name);
+});
