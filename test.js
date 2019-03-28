@@ -1,13 +1,10 @@
-var obj = {
-  name: 'Brandon Mosqueda',
-  greet: function() {
-    console.log(`Hello ${ this.name }`);
-  }       
-};
+function asyncFunc(callback) {
+  console.log('asyncFunc');
+  callback();
+}
 
-obj.greet();
-/*
-  Invocando a las funciones con call podemos pasarle
-  el objeto this para que haga referencia a otro objeto
- */
-obj.greet.call({ name: 'Alejandro González' });
+asyncFunc(function() {
+  console.log('From callback');
+});
+
+console.log('Done!');

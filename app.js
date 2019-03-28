@@ -1,21 +1,13 @@
-/*
-  Callbacks basics
- */
-function greet(callback) {
-  console.log('Hello!');
-  var data = {
-    name: 'Brandon Mosqueda'
-  };
+const fs = require('fs');
 
-  callback(data);
-} 
+//Read the file syncronously
+var greet = fs.readFileSync(__dirname + '/greet.txt', 'utf8');
+console.log(greet);
 
-greet(function(data) {
-  console.log('Callback function');
+//Read the file asyncronously and pass it a callback that it will be invoked when it finish
+var greet2 = fs.readFile(__dirname + '/greet.txt', 'utf8', function(error, data) {
   console.log(data);
 });
 
-greet(function(data) {
-  console.log('Another callback function');
-  console.log(data.name);
-});
+//This is printed before the asyncronous call of readFile
+console.log('Done!');
