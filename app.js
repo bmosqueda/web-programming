@@ -1,13 +1,9 @@
+const http = require('http');
 const fs = require('fs');
 
-//Read the file syncronously
-var greet = fs.readFileSync(__dirname + '/greet.txt', 'utf8');
-console.log(greet);
+http.createServer(function(req, res) {
+  res.writeHead(200, {'Content-type': 'text/html'});
+  const html = fs.readFileSync(__dirname + '/index.htm');
+  res.end(html);
 
-//Read the file asyncronously and pass it a callback that it will be invoked when it finish
-var greet2 = fs.readFile(__dirname + '/greet.txt', 'utf8', function(error, data) {
-  console.log(data);
-});
-
-//This is printed before the asyncronous call of readFile
-console.log('Done!');
+}).listen(1337, '127.0.0.1');
