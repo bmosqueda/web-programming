@@ -1,24 +1,34 @@
-const http = require('http');
-const fs = require('fs');
+const request = require('request');
 
-http.createServer(function(req, res) {
-  if(req.url === '/') {
-    res.writeHead(200, {'Content-type': 'text/html'});
-    fs.createReadStream(__dirname + '/index.htm').pipe(res);
+const DARK_SKY_KEY = '8372be081b052a6889e4460b12ee0e08';
+const DARK_SKY_URL = 'https://api.darksky.net/forecast/';
 
-  } else if(req.url === '/api') {
-    res.writeHead(200, {'Content-type': 'application/json'});
-    var obj = {
-      firstname: 'Brandon',
-      lastname: 'Mosqueda'
-    };
+const COORDINATES = {
+  lattitude: 19.249250, 
+  longitude: -103.697243
+};
 
-    res.end(JSON.stringify(obj));
+const options = {
+  url: `${DARK_SKY_URL}${DARK_SKY_KEY}/${COORDINATES.lattitude},${COORDINATES.longitude}`
+}
 
-  } else {
-    res.writeHead(200, {'Content-type': 'text/html'});
-    res.end('<h1>404 NOT FOUND</h1>');
-
+request(options, function (error, response, body) {
+  if(error) {
+    console.error(error);
+    return;
   }
 
-}).listen(1337, '127.0.0.1');
+  let data = JSON.parse(body);
+  let temperatureInFahrenheit = data.currently.temperature;
+
+  console.log(`Fahrenheit: ${temperatureInFahrenheit}`);
+  console.log(`Celsius: ${fahrenheitToCelsius(temperatureInFahrenheit)}`);
+});
+
+function fahrenheitToCelsius(farenheit) {
+  return round((farenheit - 32) * (5 / 9));
+}
+
+function round(num, decimals = 2) {
+  return parseFloat( parseFloat(num).toFixed(decimals) ) || 0;
+}
