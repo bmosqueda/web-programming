@@ -13,14 +13,21 @@ const MY_HOME = {
   CP: 28040
 };
 
-request(
-  `${LOCATIONIQ_URL}&postalcode=${MY_HOME.CP}&countrycodes=mx&q=${MY_HOME.street}`, 
-  function (errorLocation, responseLocation, bodyLocation) {
-    if(errorLocation) {
-      console.error(errorLocation);
-      return;
-    }
+function requestPromise(url) {
+  return new Promise((resolve, reject) => {
+    request(url, function(error, response, body) {
+      if(error) {
+        reject(error);
+        return;
+      }
 
+      resolve(body);
+    });
+  });
+}
+
+requestPromise(`${LOCATIONIQ_URL}&postalcode=${MY_HOME.CP}&countrycodes=mx&q=${MY_HOME.street}`)
+  .then((bodyLocation) => {
     let addresses = JSON.parse(bodyLocation);
     let myHomeInfo;
     try {
@@ -31,42 +38,40 @@ request(
       return;
     }
 
-    request(
-      `${DARK_SKY_URL}${myHomeInfo.lat},${myHomeInfo.lon}`,
-      function(errorSky, responseSky, bodySky) {
-        if(errorSky) {
-          console.error(errorSky);
-          return;
-        }
+    requestPromise(`${DARK_SKY_URL}${myHomeInfo.lat},${myHomeInfo.lon}`)
+      .then((bodySky) => {
         let weatherInfo = JSON.parse(bodySky);
         let temperatureInFahrenheit = weatherInfo.currently.temperature;
 
         console.log(`Fahrenheit: ${temperatureInFahrenheit}`);
         console.log(`Celsius: ${fahrenheitToCelsius(temperatureInFahrenheit)}`);
+      })
+      .catch(errorSky => {
+        console.log('Error con API de DarkSky');
+        console.error(errorSky);
+      });
 
-        let openUVOptions = {
-          url: `${OPEN_UV_URL}?lat=${myHomeInfo.lat}&lng=${myHomeInfo.lon}`,
-          headers: {
-            'x-access-token': OPEN_UV_KEY
-          }
-        };
-
-        request(
-          openUVOptions,
-          function(errorUV, response, bodyUV) {
-            if(errorUV) {
-              console.error(errorUV);
-              return;
-            }
-
-            let openUv = JSON.parse(bodyUV);
-            console.log(`Radiación uv: ${openUv.result.uv}`);
-          }
-        );
+    let openUVOptions = {
+      url: `${OPEN_UV_URL}?lat=${myHomeInfo.lat}&lng=${myHomeInfo.lon}`,
+      headers: {
+        'x-access-token': OPEN_UV_KEY
       }
-    );
-  }
-);
+    };
+
+    requestPromise(openUVOptions)
+      .then((bodyUV) => {
+        let openUv = JSON.parse(bodyUV);
+        console.log(`Radiación uv: ${openUv.result.uv}`);
+      })
+      .catch(error => {
+        console.log('Error con API de UV');
+        console.error(errorUV);
+      });
+  })
+  .catch(errorLocation => {
+    console.log('Error con API de Location');
+    console.error(errorLocation);
+  })
 
 function getColimaAddress(addresses) {
   for (var i = addresses.length - 1; i >= 0; i--) {
@@ -75,7 +80,7 @@ function getColimaAddress(addresses) {
     }
   }
 
-  throw new Error('Not found');
+  throw new Error('Colima address not found');
 }
 
 function fahrenheitToCelsius(farenheit) {
