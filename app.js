@@ -1,94 +1,24 @@
-const request = require('request');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://admin:admin22@ds257640.mlab.com:57640/addressbook');
 
-const DARK_SKY_KEY = '8372be081b052a6889e4460b12ee0e08';
-const LOCATIONIQ_KEY = '2f89795fc196fc';
-const OPEN_UV_KEY = 'aebf1c71b5cf32233f9339d21cbeae27';
+const Schema = mongoose.Schema;
 
-const DARK_SKY_URL = `https://api.darksky.net/forecast/${DARK_SKY_KEY}/`;
-const LOCATIONIQ_URL = `https://us1.locationiq.com/v1/search.php?key=${LOCATIONIQ_KEY}&format=json`;
-const OPEN_UV_URL = `https://api.openuv.io/api/v1/uv`;
+const personSchema = new Schema({
+  firstname: String,
+  lastname: String,
+  address: String
+});
 
-const MY_HOME = {
-  street: 'Av. 25 de Julio #945, Colima, Col.',
-  CP: 28040
-};
+const Person = mongoose.model('Person', personSchema);
 
-function requestPromise(url) {
-  return new Promise((resolve, reject) => {
-    request(url, function(error, response, body) {
-      if(error) {
-        reject(error);
-        return;
-      }
+const brandon = Person({
+  firstname: 'Brandon',
+  lastname: 'Mosqueda',
+  address: 'Colima, Col.'
+});
 
-      resolve(body);
-    });
-  });
-}
+brandon.save((error) => {
+  if(error) throw error;
 
-requestPromise(`${LOCATIONIQ_URL}&postalcode=${MY_HOME.CP}&countrycodes=mx&q=${MY_HOME.street}`)
-  .then((bodyLocation) => {
-    let addresses = JSON.parse(bodyLocation);
-    let myHomeInfo;
-    try {
-      myHomeInfo = getColimaAddress(addresses);
-      console.log(myHomeInfo);
-    } catch(error) {
-      console.error(error.message);
-      return;
-    }
-
-    requestPromise(`${DARK_SKY_URL}${myHomeInfo.lat},${myHomeInfo.lon}`)
-      .then((bodySky) => {
-        let weatherInfo = JSON.parse(bodySky);
-        let temperatureInFahrenheit = weatherInfo.currently.temperature;
-
-        console.log(`Fahrenheit: ${temperatureInFahrenheit}`);
-        console.log(`Celsius: ${fahrenheitToCelsius(temperatureInFahrenheit)}`);
-      })
-      .catch(errorSky => {
-        console.log('Error con API de DarkSky');
-        console.error(errorSky);
-      });
-
-    let openUVOptions = {
-      url: `${OPEN_UV_URL}?lat=${myHomeInfo.lat}&lng=${myHomeInfo.lon}`,
-      headers: {
-        'x-access-token': OPEN_UV_KEY
-      }
-    };
-
-    requestPromise(openUVOptions)
-      .then((bodyUV) => {
-        let openUv = JSON.parse(bodyUV);
-        console.log(`Radiación uv: ${openUv.result.uv}`);
-      })
-      .catch(error => {
-        console.log('Error con API de UV');
-        console.error(errorUV);
-      });
-  })
-  .catch(errorLocation => {
-    console.log('Error con API de Location');
-    console.error(errorLocation);
-  })
-
-function getColimaAddress(addresses) {
-
-  let tmpAddress = addresses.find(
-                     address => address.display_name.toLowerCase().indexOf('colima') !== -1
-                   );
-
-  if(tmpAddress !== null)
-    return tmpAddress;
-
-  throw new Error('Colima address not found');
-}
-
-function fahrenheitToCelsius(farenheit) {
-  return round((farenheit - 32) * (5 / 9));
-}
-
-function round(num, decimals = 2) {
-  return parseFloat( parseFloat(num).toFixed(decimals) ) || 0;
-}
+  console.log('Brandon Saved');
+});
