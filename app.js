@@ -74,11 +74,13 @@ requestPromise(`${LOCATIONIQ_URL}&postalcode=${MY_HOME.CP}&countrycodes=mx&q=${M
   })
 
 function getColimaAddress(addresses) {
-  for (var i = addresses.length - 1; i >= 0; i--) {
-    if(addresses[i].display_name.toLowerCase().indexOf('colima') !== -1) {
-      return addresses[i];
-    }
-  }
+
+  let tmpAddress = addresses.find(
+                     address => address.display_name.toLowerCase().indexOf('colima') !== -1
+                   );
+
+  if(tmpAddress !== null)
+    return tmpAddress;
 
   throw new Error('Colima address not found');
 }
